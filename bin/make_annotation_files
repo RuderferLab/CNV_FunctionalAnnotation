@@ -1,0 +1,96 @@
+###
+#   name      | mary lauren benton
+#   python_v  | python3
+#   created   | 2018.09.06
+#   updated   | 2018.11.14
+#             | 2018.11.19
+#             | 2018.11.26
+#             | 2019.04.25
+###
+
+###
+#
+#   PROMOTERS
+#
+#   create a promoter file using approach taken for the PsychEncode enhancer dataset.
+#  - generate 2kb windows upstream of the TSS
+#  - intersect these windows with PFC H3K27ac (PsychEncode) and DLPFC H3K4me3 (Roadmap) ChIP-seq to create 'high confidence promoters'
+#         (limit H3K27ac and H3K4me3 peaks to those with signal z-scores > 1.64, as in PyschENCODE definition)
+#
+#   columns: [chrom] [start] [end] [name] [score] [strand] [signalValue] [pValue] [qValue] [peak] [zScore]
+###
+
+echo 'Promoters...'
+
+cd ../promoters
+wget https://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/narrowPeak/E073-H3K4me3.narrowPeak.gz
+wget https://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/narrowPeak/E073-H3K27ac.narrowPeak.gz
+
+python ../bin/promoters.py
+cd ..
+
+
+###
+#
+#   ENHANCERS
+#
+#   enhancers defined by PsychEncode with protocol below:
+#       1 curated (rDHS) regions from 449 DNase-seq encode data from human (all cell types and 
+#       tissues) and these regions are in total ~2M
+#           - check Figure S23 (Gerstein paper) and http://screen.encodeproject.org/index/about
+#       2 quantify  open chromatin/ATAC-seq reads for all of these ~2M rDHS regions
+#           - calculate z-score of height of these regions for all rDHS sites and keep only 
+#             those rDHS sites which have high strength (z-score >1.64)
+#           - this data is psychencode data from PFC brain region (1 sample/ control)
+#       3 do the same step 2 on DHS peaks of PFC brain region from encode data
+#       4 retain list of open chromatin regions (ATAC and DHS) which have strong signal in PFC
+#         brain region
+#       5 find regions (from step 4 regions) that are >2KB away from TSS. and quantify H3K27ac 
+#         chip-seq (psychencode reference brain data)
+#          - any region with z-score > 1.64 is an enhancer
+#       6 similarly, find regions (from step 4) that are <2KB away from TSS and quantify H3K4me3
+#         chip-seq (psychencode reference brain data)
+#          - filter out the regions with z-score < 1.64 and check if H3K27ac peaks signal z-score is stronger there (>1.64)
+#
+#   n = 79,056 active enhancers in total
+#   columns: [chrom] [start] [end] [name] [score] [strand] [signalValue] [pValue] [qValue] [peak] [zScore]
+###
+
+echo 'Enhancers...'
+
+mkdir -p enhancers
+wget -O enhancers/DER-03a_hg19_PEC_enhancers.bed http://adult.psychencode.org/Datasets/Derived/DER-03a_hg19_PEC_enhancers.bed
+wget -O enhancers/DER-03b_hg19_high_confidence_PEC_enhancers.bed http://adult.psychencode.org/Datasets/Derived/DER-03b_hg19_high_confidence_PEC_enhancers.bed
+
+
+###
+#
+#  HI-C / TAD 
+#
+#  download the Hi-C interaction matrices in DLPFC, topologically associated domains generated
+#  from HiC and the enhancer-gene links derived from these 
+#   
+###
+
+echo 'HiC and Enhancer-Gene links...'
+
+mkdir -p chromatin_structure enh-gene_links
+wget -O chromatin_structure/PIP-01_DLPFC.10kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-01_DLPFC.10kb.txt.tar.gz
+wget -O chromatin_structure/PIP-02_DLPFC.40kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-02_DLPFC.40kb.txt.tar.gz
+wget -O chromatin_structure/DER-18_TAD_adultbrain.bed http://adult.psychencode.org/Datasets/Derived/DER-18_TAD_adultbrain.bed
+wget -O enh-gene_links/INT-16_HiC_EP_linkages.csv http://adult.psychencode.org/Datasets/Integrative/INT-16_HiC_EP_linkages.csv
+
+
+###
+#
+#  CTCF BINDING 
+#
+#  downloaded CTCF ChIP-seq data from the ENCODE Project (https://www.encodeproject.org)
+#  details in processing script
+#   
+###
+
+echo 'CTCF...'
+
+./bin/process_ctcf
+

@@ -1,0 +1,59 @@
+#!/bin/bash
+###
+#   name    | mary lauren benton
+#   created | 2018.09.19
+#   updated | 2018.10.15
+#           | 2018.10.16
+#           | 2018.10.25
+#           | 2019.04.04
+###
+
+
+cd ctcf/encode_tissues
+
+###
+#  ctcf peaks from chip-seq data for all tissues
+###
+# pull out filtered accession numbers to use in a following step (n = 76)
+grep -v GRCh38 full_metadata.tsv | grep -v 'peaks and background as input' | cut -f1 > accessions.txt
+
+# remove input/hg38 accesssion numbers to get a CTCF download file with only relevant URLs
+grep -f accessions.txt full_metadata.tsv | cut -f37 | tail -n+2 > CTCF_DOWNLOAD
+sed -i s'/^/wget /' CTCF_DOWNLOAD  # add wget (in-place) to run as command
+chmod +x CTCF_DOWNLOAD; ./CTCF_DOWNLOAD; gunzip *.gz  # retrieve all experiments in download file and unzip
+
+# concatenate all files, sort, and merge into single bed
+cat *.bed | sort -k1,1 -k2,2n | mergeBed -i stdin > ctcf_full_merged.bed
+
+# create a mapping of experiment IDs to tissues in accessions_mapped_filenames.txt
+grep -f accessions.txt full_metadata.tsv | cut -f1,7 > accessions_mapped_filenames.txt
+
+python ../../bin/create_ctcf_by_tissue.py
+
+# move raw data to separate dir
+mkdir raw_data
+mv E*.bed raw_data/
+
+
+###
+#  ctcf peaks from chip-seq data for brain tissues
+#
+#  * note that none of these are primary brain samples, but mainly related cell lines
+###
+cd ../brain_tissues
+
+# pull out filtered accession numbers to use in a following step (n = 13)
+cut -f1 brain_metadata.tsv > accessions.txt
+
+# keep the 13 relevant accession URLs and save in download file
+grep -f accessions.txt brain_metadata.tsv | cut -f37 | tail -n+2 > CTCF_BRAIN_DOWNLOAD
+sed -i s'/^/wget /' CTCF_BRAIN_DOWNLOAD  # add wget (in-place) to run as command
+chmod +x CTCF_BRAIN_DOWNLOAD; ./CTCF_BRAIN_DOWNLOAD; gunzip *.gz  # retrieve all experiments in download file and unzip
+
+# concatenate all files, sort, and merge into single bed
+cat *.bed | sort -k1,1 -k2,2n | mergeBed -i stdin > ctcf_brain_merged.bed
+
+# move raw data to separate dir
+mkdir raw_data
+mv E*.bed raw_data/
+
