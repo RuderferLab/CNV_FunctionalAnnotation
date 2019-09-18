@@ -9,6 +9,9 @@
 # CNV3 6 17500226 17506043 DUP
 # CNV4 5 12741496 12746419 DEL
 
+# output includes all genes that are affected by CNV, if a CNV does not affect any gene it will not be in the output
+
+
 #file that has exon information for each gene
 my $gene_file = "Ensemblv75/Ensemblv75_merged_exons";
 
@@ -47,6 +50,9 @@ while(<in>){
     my $svstart = $line[2];
     my $svend = $line[3];
     my $svtype = $line[4];
+    if( $svtype ne "DEL" && $svtype ne "DUP"){
+	next;
+    }
     my $svlen = $svend - $svstart;
 
     my %enhancer = ();
