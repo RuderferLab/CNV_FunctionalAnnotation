@@ -23,6 +23,7 @@ sh bin/annotate-cnv.sh [path where git repository was cloned] [path_to_CNV_file]
 There is a test CNV file in test/test.cnv (see below). Only DEL or DUP are accepted types
 
 id  |chr| start| end|SVType  
+---|---|---|---|---
 CNV1|2|133450000|133550000| DEL  
 CNV2|12|12150000|12880000|DEL   
 CNV3|7|6450000|6550000|DUP  
@@ -43,6 +44,7 @@ Output file has same columns as input file plus below:
 *inTad*: within TAD (1) or not (0)  
 
 id |chr |start |end |SVType |SVLen |gene |trans |ExonProp |pro.sum |enh.sum |inTad
+---|---|---|---|---|---|---|---|---|---|---|---
 CNV1 |2 |133450000 |133550000 |DEL |100000 |ENSG00000176771 |0.111525 |0.50330015715034 |0 |0 |1
 CNV2 |12 |12150000 |12880000 |DEL |730000 |ENSG00000070018 |1 |1 |1 |0 |1
 CNV2 |12 |12150000 |12880000 |DEL |730000 |ENSG00000111261 |1 |1 |1 |3 |0
@@ -57,6 +59,7 @@ CNV2 |12 |12150000 |12880000 |DEL |730000 |ENSG00000178878 |0.0110419 |0.0354825
 ## Final output file
 
 id |chr |start |end |SVType |SVLen |ngenes |exon |enh |pro |pred_exp |reg_dist
+---|---|---|---|---|---|---|---|---|---|---|---
 CNV1 |2 |133450000 |133550000 |DEL |100000 |1 |0.50330015715034 |0 |0 |-0.923467521409079 |-0.683216839007316
 CNV2 |12 |12150000 |12880000 |DEL |730000 |22 |21.0354825348612 |36 |22 |-45.6165484017837 |-14.6298854256054
 CNV3 |7 |6450000 |6550000 |DUP |100000 |5 |4.34803581412534 |21 |4 |4.90544957250558 |1.67441995009775
