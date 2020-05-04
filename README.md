@@ -62,12 +62,13 @@ CNV2 |12 |12150000 |12880000 |DEL |730000 |ENSG00000178878 |0.0110419 |0.0354825
 ## Final output file
 
 Additional columns from input file:
-**ngenes**: Number of genes affected directly by CNV
-**exon**: Cumulative sum of proportion of exonic sequence affected across all genes
-**enh**: Cumuatlve sum of all enhancer sequences affected across all genes
-**pro**: Cumuatlve sum of all promoter sequences affected across all genes
-**pred_exp**: Predicted expression z-score
-**reg_dist**: Regulatory disruption score 
+
+**ngenes**: Number of genes affected directly by CNV   
+**exon**: Cumulative sum of proportion of exonic sequence affected across all genes   
+**enh**: Cumuatlve sum of all enhancer sequences affected across all genes   
+**pro**: Cumuatlve sum of all promoter sequences affected across all genes   
+**pred_exp**: Predicted expression z-score   
+**reg_dist**: Regulatory disruption score    
 
 id |chr |start |end |SVType |SVLen |ngenes |exon |enh |pro |pred_exp |reg_dist
 ---|---|---|---|---|---|---|---|---|---|---|---
