@@ -48,6 +48,9 @@ data.annot[is.na(data.annot$inTad),]$inTad = 0
 
 data = merge(data,data.annot,by="id")
 
+print("Writing out intermediate CNV by gene annotations...")
+write.table(data,paste(cnv_file,"gene_annot",sep="."),quote=F,row.names=F,col.names=T)
+
 print("Reading in models...")
 load(paste(dir,"CNV_FunctionalAnnotation/CNV-models.Rdata",sep="/"))
 

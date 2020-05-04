@@ -18,7 +18,7 @@ cd ctcf/encode_tissues
 grep -v GRCh38 full_metadata.tsv | grep -v 'peaks and background as input' | cut -f1 > accessions.txt
 
 # remove input/hg38 accesssion numbers to get a CTCF download file with only relevant URLs
-grep -f accessions.txt full_metadata.tsv | cut -f37 | tail -n+2 > CTCF_DOWNLOAD
+grep -f accessions.txt full_metadata.tsv | cut -f37  > CTCF_DOWNLOAD
 sed -i s'/^/wget /' CTCF_DOWNLOAD  # add wget (in-place) to run as command
 chmod +x CTCF_DOWNLOAD; ./CTCF_DOWNLOAD; gunzip *.gz  # retrieve all experiments in download file and unzip
 
@@ -46,7 +46,7 @@ cd ../brain_tissues
 cut -f1 brain_metadata.tsv > accessions.txt
 
 # keep the 13 relevant accession URLs and save in download file
-grep -f accessions.txt brain_metadata.tsv | cut -f37 | tail -n+2 > CTCF_BRAIN_DOWNLOAD
+grep -f accessions.txt brain_metadata.tsv | cut -f37 > CTCF_BRAIN_DOWNLOAD
 sed -i s'/^/wget /' CTCF_BRAIN_DOWNLOAD  # add wget (in-place) to run as command
 chmod +x CTCF_BRAIN_DOWNLOAD; ./CTCF_BRAIN_DOWNLOAD; gunzip *.gz  # retrieve all experiments in download file and unzip
 

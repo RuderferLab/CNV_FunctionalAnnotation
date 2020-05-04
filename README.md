@@ -1,4 +1,3 @@
-1;95;0c# Still in development
 # CNV_FunctionalAnnotation (All currently done in hg19)
 Details to annotate CNV and apply prediction model
 
@@ -9,7 +8,9 @@ Han L, Zhao X, Benton ML, Perumal T, Collins RL, Hoffman, GE, Johnson JS, Sloofm
 
 ## Data Generation
 
+```bash
 To download/generate annotation files run `bin/make_annotation_files`.
+```
 
 ## Prediction models
 
@@ -18,7 +19,9 @@ The deletion and duplication models are saved in CNV-models.Rdata
 
 ## Annotating CNV and applying models to generate regulatory disruption scores (will generate intermediate and results files in same directory as CNV file)
 
+```bash
 sh bin/annotate-cnv.sh [path where git repository was cloned] [path_to_CNV_file]
+```
 
 There is a test CNV file in test/test.cnv (see below). Only DEL or DUP are accepted types
 
@@ -35,13 +38,13 @@ CNV5|18|5450000|7550000|DEL
 
 Output file has same columns as input file plus below:  
 
-*SVLen*: CNV length  
-*gene*: Ensembl gene name  
-*trans*: proportion of entire gene affected
-*ExonProp*: proportion of exonic sequence affected   
-*pro.sum*: proportion of promoter sequence affected  
-*enh.sum*: sum proportion of all enhancers sequence affected   
-*inTad*: within TAD (1) or not (0)  
+**SVLen**: CNV length  
+**gene**: Ensembl gene name  
+**trans**: proportion of entire gene affected
+**ExonProp**: proportion of exonic sequence affected   
+**pro.sum**: proportion of promoter sequence affected  
+**enh.sum**: sum proportion of all enhancers sequence affected   
+**inTad**: within TAD (1) or not (0)  
 
 id |chr |start |end |SVType |SVLen |gene |trans |ExonProp |pro.sum |enh.sum |inTad
 ---|---|---|---|---|---|---|---|---|---|---|---
@@ -57,6 +60,14 @@ CNV2 |12 |12150000 |12880000 |DEL |730000 |ENSG00000178878 |0.0110419 |0.0354825
 
 
 ## Final output file
+
+Additional columns from input file:
+**ngenes**: Number of genes affected directly by CNV
+**exon**: Cumulative sum of proportion of exonic sequence affected across all genes
+**enh**: Cumuatlve sum of all enhancer sequences affected across all genes
+**pro**: Cumuatlve sum of all promoter sequences affected across all genes
+**pred_exp**: Predicted expression z-score
+**reg_dist**: Regulatory disruption score 
 
 id |chr |start |end |SVType |SVLen |ngenes |exon |enh |pro |pred_exp |reg_dist
 ---|---|---|---|---|---|---|---|---|---|---|---

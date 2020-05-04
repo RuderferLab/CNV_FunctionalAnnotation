@@ -59,6 +59,11 @@ echo 'Enhancers...'
 
 mkdir -p enhancers
 wget -O enhancers/DER-03a_hg19_PEC_enhancers.bed http://adult.psychencode.org/Datasets/Derived/DER-03a_hg19_PEC_enhancers.bed
+
+# remove header which is not tab delimited
+awk 'NR > 1' enhancers/DER-03a_hg19_PEC_enhancers.bed > a
+mv a enhancers/DER-03a_hg19_PEC_enhancers.bed
+
 wget -O enhancers/DER-03b_hg19_high_confidence_PEC_enhancers.bed http://adult.psychencode.org/Datasets/Derived/DER-03b_hg19_high_confidence_PEC_enhancers.bed
 
 
