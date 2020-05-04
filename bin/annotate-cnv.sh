@@ -32,3 +32,7 @@ bedtools intersect -a ${input}.bed -b ${dir}/CNV_FunctionalAnnotation/promoters/
 echo "Running R script to apply model..."
 Rscript ${dir}/CNV_FunctionalAnnotation/bin/apply-model.R $1 $2
 
+echo "Deleting intermediate files..."
+rm ${input}-gene ${input}-exon ${input}-tad ${input}-gene-tad ${input}-PEC-enhancers.all ${input}-PEC-enhancers.cnt ${input}-PEC-enhancer-predictions ${input}-ctcf.cnt ${input}-gene-promoters ${input}-promoters 
+
+

@@ -34,7 +34,7 @@ CNV4|4|70450000|71260000|DUP
 CNV5|18|5450000|7550000|DEL   
 
 
-## Intermediate CNV by gene annotation file
+## Intermediate CNV by gene annotation file (*.gene.annot)
 
 Output file has same columns as input file plus below:  
 
@@ -59,7 +59,7 @@ CNV2 |12 |12150000 |12880000 |DEL |730000 |ENSG00000165714 |1 |1 |1 |0 |1
 CNV2 |12 |12150000 |12880000 |DEL |730000 |ENSG00000178878 |0.0110419 |0.0354825348612453 |1 |0 |1
 
 
-## Final output file
+## Final output file (*.reg_disruption)
 
 Additional columns from input file:
 
