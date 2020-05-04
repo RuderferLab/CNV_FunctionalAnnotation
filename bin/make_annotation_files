@@ -22,13 +22,12 @@
 
 echo 'Promoters...'
 
-cd ../promoters
-wget https://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/narrowPeak/E073-H3K4me3.narrowPeak.gz
-wget https://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/narrowPeak/E073-H3K27ac.narrowPeak.gz
+wget -O promoters/E073-H3K4me3.narrowPeak.gz https://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/narrowPeak/E073-H3K4me3.narrowPeak.gz
+wget -O promoters/E073-H3K27ac.narrowPeak.gz https://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/narrowPeak/E073-H3K27ac.narrowPeak.gz
 
+cd promoters
 python ../bin/promoters.py
 cd ..
-
 
 ###
 #
@@ -75,6 +74,7 @@ wget -O enhancers/DER-03b_hg19_high_confidence_PEC_enhancers.bed http://adult.ps
 echo 'HiC and Enhancer-Gene links...'
 
 mkdir -p chromatin_structure enh-gene_links
+
 wget -O chromatin_structure/PIP-01_DLPFC.10kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-01_DLPFC.10kb.txt.tar.gz
 wget -O chromatin_structure/PIP-02_DLPFC.40kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-02_DLPFC.40kb.txt.tar.gz
 wget -O chromatin_structure/DER-18_TAD_adultbrain.bed http://adult.psychencode.org/Datasets/Derived/DER-18_TAD_adultbrain.bed

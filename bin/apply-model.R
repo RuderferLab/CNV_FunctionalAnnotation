@@ -1,7 +1,9 @@
 args = commandArgs(trailingOnly=TRUE)
 
-print(paste("CNV File: ",args[1],sep=" "))
-cnv_file <- args[1]
+#print(paste("CNV File: ",args[1],sep=" "))
+
+dir = args[1]
+cnv_file = args[2]
 data = read.table(cnv_file,header=T)
 data$SVLen = data$end - data$start 
 all = data
@@ -9,7 +11,7 @@ all = data
 
 # coding proportion
 data.exon = read.table(paste(cnv_file,"exon",sep="-"))
-data.gene = read.table("Ensemblv75/Ensemblv75_merged_exons",header=T)
+data.gene = read.table(paste(dir,"CNV_FunctionalAnnotation/Ensemblv75/Ensemblv75_merged_exons",sep="/"),header=T)
 data.exon.sum = aggregate(data.exon$V3,list(data.exon$V1,data.exon$V2),sum)
 data.gene = data.gene[,c(1,6)]
 data.exon.sum = merge(data.exon.sum,data.gene,by.x="Group.2",by.y="Geneid")
@@ -47,7 +49,7 @@ data.annot[is.na(data.annot$inTad),]$inTad = 0
 data = merge(data,data.annot,by="id")
 
 print("Reading in models...")
-load("CNV-models.Rdata")
+load(paste(dir,"CNV_FunctionalAnnotation/CNV-models.Rdata",sep="/"))
 
 
 print("Applying models...")
@@ -60,12 +62,12 @@ data$cre = data$enh.sum + data$pro.sum
 data$gene.cnt = 0
 data[data$ExonProp > 0,]$gene.cnt = 1
 
-ginfo = read.table("Ensemblv75/Ensemblv75-hgnc.convert",header=T,sep="\t")
+ginfo = read.table(paste(dir,"CNV_FunctionalAnnotation/Ensemblv75/Ensemblv75-hgnc.convert",sep="/"),header=T,sep="\t")
 names(ginfo) = c("gene","symbol")
 
 print("Adding constraint information...")
 # gnomAD constraint (https://storage.cloud.google.com/gnomad-public/release/2.1/ht/constraint/constraint.txt.bgz)
-p = read.table("release_2.1_ht_constraint_constraint.txt",header=T)
+p = read.table(paste(dir,"CNV_FunctionalAnnotation/release_2.1_ht_constraint_constraint.txt",sep="/"),header=T)
 p = p[p$canonical == "true",]
 p = p[,c(1,6,22)]
 names(p)[1] = "symbol"
@@ -90,7 +92,7 @@ names(oe) = c("gene","oe")
 pf = merge(pf,oe,all.x=T,by="gene")
 
 data = merge(data,pf,by="gene",all.x=T)
-data$wt = data$pred_exp * data$oe
+data$reg_dist = data$pred_exp * data$oe
 
 
 print("Creating CNV level regulatory disruption scores...")
@@ -98,22 +100,22 @@ cnv.ngene = aggregate(data$gene.cnt,list(data$id),sum,na.rm=T)
 cnv.exon = aggregate(data$ExonProp,list(data$id),sum,na.rm=T)
 cnv.enh = aggregate(data$enh.sum,list(data$id),sum,na.rm=T)
 cnv.pro = aggregate(data$pro.sum,list(data$id),sum,na.rm=T)
-cnv.exp = aggregate(data$pred_exp,list(data$id),sum,na.rm=T)
-cnv.wt = aggregate(data[!is.na(data$wt),]$wt,list(data[!is.na(data$wt),]$id),sum,na.rm=T)
+cnv.pred_exp = aggregate(data$pred_exp,list(data$id),sum,na.rm=T)
+cnv.reg_dist = aggregate(data[!is.na(data$reg_dist),]$reg_dist,list(data[!is.na(data$reg_dist),]$id),sum,na.rm=T)
 
 names(cnv.ngene) = c("id","ngenes")
 names(cnv.exon) = c("id","exon")
 names(cnv.enh) = c("id","enh")
 names(cnv.pro) = c("id","pro")
-names(cnv.exp) = c("id","exp")
-names(cnv.wt) = c("id","wt")
+names(cnv.pred_exp) = c("id","pred_exp")
+names(cnv.reg_dist) = c("id","reg_dist")
 
 cnv = merge(all,cnv.ngene,by="id",all.x=T)
 cnv = merge(cnv,cnv.exon,by="id",all.x=T)
 cnv = merge(cnv,cnv.enh,by="id",all.x=T)
 cnv = merge(cnv,cnv.pro,by="id",all.x=T)
-cnv = merge(cnv,cnv.exp,by="id",all.x=T)
-cnv = merge(cnv,cnv.wt,by="id",all.x=T)
+cnv = merge(cnv,cnv.pred_exp,by="id",all.x=T)
+cnv = merge(cnv,cnv.reg_dist,by="id",all.x=T)
 
 cnv[is.na(cnv)] = 0
 
