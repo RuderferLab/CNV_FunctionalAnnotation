@@ -80,8 +80,8 @@ echo 'HiC and Enhancer-Gene links...'
 
 mkdir -p chromatin_structure enh-gene_links
 
-wget -O chromatin_structure/PIP-01_DLPFC.10kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-01_DLPFC.10kb.txt.tar.gz
-wget -O chromatin_structure/PIP-02_DLPFC.40kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-02_DLPFC.40kb.txt.tar.gz
+#wget -O chromatin_structure/PIP-01_DLPFC.10kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-01_DLPFC.10kb.txt.tar.gz
+#wget -O chromatin_structure/PIP-02_DLPFC.40kb.txt.tar.gz http://adult.psychencode.org/Datasets/Pipeline/HiC_matrices/PIP-02_DLPFC.40kb.txt.tar.gz
 wget -O chromatin_structure/DER-18_TAD_adultbrain.bed http://adult.psychencode.org/Datasets/Derived/DER-18_TAD_adultbrain.bed
 wget -O enh-gene_links/INT-16_HiC_EP_linkages.csv http://adult.psychencode.org/Datasets/Integrative/INT-16_HiC_EP_linkages.csv
 

@@ -48,9 +48,6 @@ data.annot[is.na(data.annot$inTad),]$inTad = 0
 
 data = merge(data,data.annot,by="id")
 
-print("Writing out intermediate CNV by gene annotations...")
-write.table(data,paste(cnv_file,"gene_annot",sep="."),quote=F,row.names=F,col.names=T)
-
 print("Reading in models...")
 load(paste(dir,"CNV_FunctionalAnnotation/CNV-models.Rdata",sep="/"))
 
@@ -67,6 +64,10 @@ data[data$ExonProp > 0,]$gene.cnt = 1
 
 ginfo = read.table(paste(dir,"CNV_FunctionalAnnotation/Ensemblv75/Ensemblv75-hgnc.convert",sep="/"),header=T,sep="\t")
 names(ginfo) = c("gene","symbol")
+
+print("Writing out intermediate CNV by gene annotations...")
+write.table(data,paste(cnv_file,"gene_annot",sep="."),quote=F,row.names=F,col.names=T)
+
 
 print("Adding constraint information...")
 # gnomAD constraint (https://storage.cloud.google.com/gnomad-public/release/2.1/ht/constraint/constraint.txt.bgz)

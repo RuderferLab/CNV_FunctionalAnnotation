@@ -4,9 +4,9 @@ Details to annotate CNV and apply prediction model
 Required python3 dependencies: defaultdict, pybedtools, numpy, pandas, scipy
 
 ## Citation
-Han L, Zhao X, Benton ML, Perumal T, Collins RL, Hoffman, GE, Johnson JS, Sloofman L, Stone MJ, CommonMind Consortium, Brennand KJ, Brand H, Sieberts SK, Marenco S, Peters MA, Lipska BK, Roussos P, Capra JA, Talkowski M, Ruderfer DM. Functional annotation of rare structural variation in the human brain. BioRxiv doi: https://doi.org/10.1101/711754
+Han L, Zhao X, Benton ML, Perumal T, Collins RL, Hoffman, GE, Johnson JS, Sloofman L, Stone MJ, CommonMind Consortium, Brennand KJ, Brand H, Sieberts SK, Marenco S, Peters MA, Lipska BK, Roussos P, Capra JA, Talkowski M, Ruderfer DM. Functional annotation of rare structural variation in the human brain. Nature Communications 2020.
 
-## Data Generation
+## Downloading and generating necessary regulatory annotation files (should take < ~5 minutes)
 
 ```bash
 To download/generate annotation files run `bin/make_annotation_files`.
